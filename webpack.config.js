@@ -15,6 +15,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
+const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = {
   mode: 'production',
@@ -23,7 +24,8 @@ module.exports = {
     app: './js/index.app.js',
     dashboard_music_widget: './js/index.dashboard.js',
     files_music_player: './js/index.embedded.js',
-    scrobble_getsession_result: './js/index.scrobble-getsession-result.js'
+    scrobble_getsession_result: './js/index.scrobble-getsession-result.js',
+    admin_settings: './js/index.admin-settings.js'
   },
   output: {
     filename: 'webpack.[name].[contenthash].js',
@@ -46,6 +48,7 @@ module.exports = {
     }
   },
   plugins: [
+    new VueLoaderPlugin(),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({filename: 'webpack.[name].[contenthash].css'}),
     new ESLintPlugin({files: './js'}),
@@ -78,6 +81,10 @@ module.exports = {
       {
         resourceQuery: /raw/,
         type: 'asset/source',
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
       },
       {
         include: path.resolve('node_modules', 'lodash'),
